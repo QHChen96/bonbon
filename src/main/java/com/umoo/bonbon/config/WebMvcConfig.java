@@ -3,6 +3,8 @@ package com.umoo.bonbon.config;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -35,6 +37,7 @@ import com.umoo.bonbon.resolver.GlobalExceptionResolver;
 @EnableWebMvc
 @ComponentScan("com.umoo.bonbon.web")
 public class WebMvcConfig extends WebMvcConfigurerAdapter{
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private static final String VIEWS = "/WEB-INF/views/";
 	private static final String MESSAGE_SOURCE = "classpath:i18n/messages";
 	/**
@@ -43,6 +46,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 	 */
 	@Bean
 	public ViewResolver htmlViewResolver() {
+		LOGGER.debug("viewResolver>>>");
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setPrefix(VIEWS);
 		viewResolver.setSuffix(".html");
@@ -53,6 +57,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 	//国际化
 	@Bean
 	public MessageSource messageSource() {
+		LOGGER.debug("messageSource>>>");
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 		messageSource.setBasename(MESSAGE_SOURCE);
 		messageSource.setCacheSeconds(120);
@@ -61,11 +66,13 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 	
 	@Bean
 	public HandlerExceptionResolver globalExceptionResolver(){
+		LOGGER.debug("globalExceptionResolver>>>");
 		return new GlobalExceptionResolver();
 	}
 	
 	@Bean
 	public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer(){
+		LOGGER.debug("propertyPlaceholderConfigurer>>>");
 		PropertyPlaceholderConfigurer placeholderConfigurer = new PropertyPlaceholderConfigurer();
 		placeholderConfigurer.setFileEncoding("UTF-8");
 		placeholderConfigurer.setLocations(new ClassPathResource("jdbc.properties"));

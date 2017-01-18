@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class R {
-	@Value("#{jdbc.usernmae}")
+	@Value("${jdbc.username}")
 	private String username;
 	public void outpur(){
 		System.out.println(username);

@@ -6,7 +6,8 @@ import javax.servlet.ServletRegistration.Dynamic;
 
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-import org.springframework.web.util.Log4jConfigListener;
+import org.springframework.web.util.IntrospectorCleanupListener;
+
 /**
  * 
  * @author umoo
@@ -19,7 +20,7 @@ public class BonbonWebAppInitializer extends AbstractAnnotationConfigDispatcherS
 	 */
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class[] { RootConfig.class, AopConfig.class, MySqlConfig.class};
+		return new Class[] { RootConfig.class, MybatisConfig.class, AopConfig.class};
 	}
 	
 	/**
@@ -49,8 +50,21 @@ public class BonbonWebAppInitializer extends AbstractAnnotationConfigDispatcherS
 	//配置过滤器
 	@Override
 	protected Filter[] getServletFilters() {
+		//POST请求乱码
 		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter("UTF-8", true);
 		return new Filter[]{ characterEncodingFilter};
 	}
+
+	@Override
+	protected void customizeRegistration(Dynamic registration) {
+		
+	}
+
+	@Override
+	protected void registerContextLoaderListener(ServletContext servletContext) {
+		servletContext.addListener(IntrospectorCleanupListener.class);
+		super.registerContextLoaderListener(servletContext);
+	}
+	
 	
 }
